@@ -8,7 +8,7 @@ namespace Nbody6
 {
     public class Dot
     {
-        public int ID { get; set; }
+        public int ID;
         public double Xcoord { get; set; }
         public double Ycoord { get; set; }
         public double Mass { get; set; }
@@ -26,11 +26,11 @@ namespace Nbody6
             //other properties due to forces for only the object this function is called from
             double totDispX = 0;
             double totDispY = 0;
-            foreach (var dot in World)
-            {
-                if(dot.ID != this.ID)
+            for (int i = 0; i < World.Count; i++)
+           {
+                if (World[i] != this)
                 {
-                    var temp = PhysMath.XYdisplacement(this, dot, timestep);
+                    var temp = PhysMath.XYdisplacement(this, World[i], timestep);
                     totDispX += temp.Item1;
                     totDispY += temp.Item2;
                 }
@@ -38,10 +38,13 @@ namespace Nbody6
             this.Xcoord += totDispX;
             this.Ycoord += totDispY;
 
+            this.VelX = totDispX;
+            this.VelY = totDispY;
+
             this.Speed = PhysMath.Hypo(totDispX, totDispY)/timestep;
         }
 
-        public Dot(double intertia, double xcoord, double ycoord, double mass, double temperature, double velX, double velY)
+        public Dot(double xcoord, double ycoord, double mass, double temperature, double velX, double velY)
         {
             ID++;
             Xcoord = xcoord;

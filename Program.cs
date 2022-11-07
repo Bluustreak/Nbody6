@@ -7,8 +7,10 @@ using System.Linq.Expressions;
 List<Dot> World = new List<Dot>();
 
 //hardcoded testDots
-World.Add(new Dot(1,1,1,300,0,0));
-World.Add(new Dot(0,0,1,300,0,0));
+World.Add(new Dot(1, 1, 1, 1, 0, 0.02));
+World.Add(new Dot(-1, 1, 100000000, 1, 0, 0));
+DrawingTools.DrawDots(World);
+
 
 double timestep = 1;
 bool runSim = true;
@@ -18,4 +20,10 @@ while (runSim)
 	{
 		dot.Update(World, timestep);
 	}
+    //draw the dots
+    DrawingTools.DrawDots(World);
+
+    Console.WriteLine(" XY are: " + World[0].Xcoord + " ," + World[0].Ycoord + " speed: "+ World[0].Speed);
+
+
 }

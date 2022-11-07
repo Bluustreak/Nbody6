@@ -37,21 +37,22 @@ namespace Nbody6
 
             //gets the force and resulting acceleration due the two masses involved
             double force = (G * a.Mass * b.Mass)/Math.Pow(DotDistance(a,b),2);
+
             // here is also where you should add any extra forces that repells
-            //force += -Math.Pow(DotDistance(a, b), 5);
+            //this one acts as a collider
+            force -= 0.1*(G * a.Mass * b.Mass)/Math.Pow(DotDistance(a, b), 5);
+
             double acc = force / a.Mass;
             //acc *= TimeDil(a); // too activate lorentz scaling to the speed
 
-
-
             //these differences are used in the propotions of acceleration in X vs Y, VS dist
-            double dx = a.Xcoord - b.Xcoord;
-            double dy = a.Ycoord - b.Ycoord;
+            double dx = b.Xcoord - a.Xcoord;
+            double dy = b.Ycoord - a.Ycoord;
             double dist = Hypo(dx, dy);
-            double AccX = Math.Cos(dx/dist);
-            double AccY = Math.Sin(dy/dist);
+            double AccX = acc*(dx/dist);
+            double AccY = acc*(dy/dist);
             //directionality of acceleration is kept due to local calculation of dx and dy
-
+            //NOTE; at first I did acc*Math.Cos(dx/dist), but dx already exists!
 
             //s = ut + (1/2)at^2, the equation for displacement due to acceleration
             double sx = a.VelX * timestep + (0.5f) * AccX * Math.Pow(timestep, 2);
